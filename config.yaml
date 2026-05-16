@@ -1,0 +1,88 @@
+# config.yaml
+# support multiple models and configurations
+
+# default config name
+default_data_config: sts_task
+default_model_config: vanilla-mean-pool
+default_architecture_config: mistral-instruct-vanilla
+
+# GPU config
+gpu_config:
+  cuda_visible_devices: "0,1,2,3,4,5,6,7"
+
+
+data:
+  sts_task:
+    tasks: "sts16-sts, sts15-sts, sts14-sts, sts13-sts, sts12-sts"
+    batch_size: 64
+    max_length: 512
+    
+  retrieval_task:
+    tasks: "SCIDOCS" #ClimateFEVER, #ArguAna #DBPedia, #FiQA2018 #ArguAna,FiQA2018,NFCorpus,SciFact,
+    query_batch_size: 16
+    document_batch_size: 16
+    max_length: 512
+
+
+  long_context_task:
+    tasks: "2wikimqa,summ_screen_fd,qmsum" #narrativeqa #,, 2wikimqa,
+    query_batch_size: 16
+    document_batch_size: 1
+    max_length: 8192
+
+
+  long_context_synthetic_task:
+    tasks: "needle,passkey"
+    context_length: 256
+    query_batch_size: 16
+    document_batch_size: 2
+    max_length: 256
+
+
+models:
+  vanilla-mean-pool:
+    pooling: mean
+    padding_side: right
+    template: {query: "<s> Retrieve relevant document. Text:{%%text%%} </s>", document: "<s> {%%text%%} </s>"}
+
+  vanilla-last-pool:
+    pooling: last
+    padding_side: right
+    template: {query: "<s> Retrieve relevant document. {%%text%%} {</s>}", document: "<s> {%%text%%} {</s>}"}
+
+  echo-mean-pool:
+    pooling: mean
+    padding_side: right
+    template: {query: "<s> Retrieve relevant document. Query: {!%%text%%} Query again: {%%text%%} </s>", document: "<s> {!%%text%%}{%%text%%} </s>"}
+
+  prompteol-last-pool:
+    pooling: last
+    padding_side: right
+    template: {'query': '<s> The sentence \"{%%text%%}\" means in one word: {"} </s>', 'document': '<s> The sentence \"{%%text%%}\" means in one word: {"} </s>'}
+
+  tp-prompteol-last-pool:
+    pooling: last
+    padding_side: right
+    template: {'query': '<s> The sentence <PST> \"{%%text%%}\" means in one word: {</s>}','document': '<s> The sentence <PST> \"{%%text%%}\" means in one word: {</s>}'}
+
+  tp-mean-pool:
+    pooling: mean
+    padding_side: left
+    template: {'query': 'Retrieve relevant documents: <PST> \"{%%text%%} \"','document': '<PST> \"{%%text%%}\"'}
+
+
+architectures:
+  # Mistral-7B-instruct-v0.3 
+  mistral-instruct-vanilla:
+    model_name_or_path: "mistralai/Mistral-7B-Instruct-v0.3"
+    use_which_plan: vanilla
+    output_layer: -1
+    tp_starting_index: 0 
+    tp_exiting_index: 0 
+
+  mistral-instruct-tp:
+    model_name_or_path: "mistralai/Mistral-7B-Instruct-v0.3"
+    use_which_plan: tp
+    output_layer: -2
+    tp_starting_index: 1 
+    tp_exiting_index: 7
