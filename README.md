@@ -1,5 +1,5 @@
 # HTP
-This repository contains the code for Hierarchical Token Prepending: Enhancing Information Flow in Decoder-based LLM Embeddings (ACL 2026)
+This repository contains the code for [Hierarchical Token Prepending: Enhancing Information Flow in Decoder-based LLM Embeddings](https://arxiv.org/abs/2511.14868), accepted by **ACL 2026 (Oral)**.
 
 
 # Model Directory
