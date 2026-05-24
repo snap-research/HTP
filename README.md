@@ -219,4 +219,16 @@ python mteb_sts_tasks.py --model_method vanilla-mean-pool --architecture mistral
 - `--use_which_plan tp_sentence`: Sentence-level token positioning
 - `--use_which_plan tp_sentence_begin`: Hierarchical sentence positioning
 
+## Citation
 
+If you use this implementation, please cite:
+
+```bibtex
+@inproceedings{ding2025hierarchical,
+  title={Hierarchical Token Prepending: Enhancing Information Flow in Decoder-based LLM Embeddings},
+  author={Ding, Xueying and Huang, Xingyue and Ju, Mingxuan and Collins, Liam and Liu, Yozen and Akoglu, Leman and Shah, Neil and Zhao, Tong},
+  booktitle={Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics},
+  year={2026},
+  url={https://arxiv.org/abs/2511.14868}
+}
+```
